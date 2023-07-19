@@ -2,7 +2,7 @@ import re
 from pathlib import Path
 from setuptools import find_packages, setup
 
-with open(Path(__file__).parent / "kuro_utils" / "__init__.py", "r") as fp:
+with open(Path(__file__).parent / "kuroutils" / "__init__.py", "r") as fp:
     version = re.search(r"__version__ = \"(\d*\.\d*\.\d*)\"", fp.read()).group(1)
 
 with open("README.md", "r") as fp:
