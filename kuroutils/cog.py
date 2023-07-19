@@ -48,5 +48,5 @@ class Cog(commands.Cog):
             f"{pre_processed}\n\n"
             f"`Cog Authors   :` {humanize_list(self.__author__)}\n"
             f"`Cog Version   :` {self.__version__}\n"
-            f"`Documentation :` [Click here to read!]({docs}"
+            f"`Documentation :` [Click here to read!]({docs})"
         )
