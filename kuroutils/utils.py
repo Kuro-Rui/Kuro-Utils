@@ -4,7 +4,7 @@ import discord
 
 
 async def delete_message(
-    message: Optional[discord.Message], delay: Optional[float] = None
+    message: Optional[discord.Message], *, delay: Optional[float] = None
 ) -> bool:
     """
     Delete a message, ignoring any exceptions.
