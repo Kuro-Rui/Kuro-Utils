@@ -14,5 +14,6 @@ __license__ = "MIT"
 __version__ = "0.0.4"
 
 from .cog import *
+from .converters import *
 from .logging import *
 from .utils import *
