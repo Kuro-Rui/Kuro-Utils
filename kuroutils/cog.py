@@ -1,3 +1,4 @@
+import contextlib
 from typing import List, Optional
 
 import discord
@@ -5,6 +6,8 @@ from redbot.cogs.downloader.installable import InstalledModule
 from redbot.core import commands
 from redbot.core.bot import Red
 from redbot.core.utils.chat_formatting import humanize_list
+
+from .logging import close_logger, get_logger, init_logger
 
 
 class Cog(commands.Cog):
@@ -14,6 +17,8 @@ class Cog(commands.Cog):
 
     def __init__(self, bot: Red):
         self.bot = bot
+        self._log = get_logger(self)
+        init_logger(self, self._log)
 
     async def get_cog_as_installed_module(self) -> Optional[InstalledModule]:
         if not (downloader := self.bot.get_cog("Downloader")):
@@ -22,22 +27,16 @@ class Cog(commands.Cog):
         name += "cog" if name == "calendar" else ""
         return discord.utils.get(await downloader.installed_cogs(), name=name)
 
-    async def get_cog_commit(self) -> Optional[str]:
-        if module := await self.get_cog_as_installed_module():
-            return module.commit
-
-    async def get_cog_repo_url(self) -> Optional[str]:
-        if module := await self.get_cog_as_installed_module():
-            if module.repo:
-                return module.repo.clean_url
-
     async def cog_load(self) -> None:
-        if commit := await self.get_cog_commit():
-            self.__commit__ = commit
-            if repo_url := await self.get_cog_repo_url():
-                self.__version__ += f"+g[{commit[:7]}]({repo_url}/commit/{commit})"
+        if module := await self.get_cog_as_installed_module():
+            self.__commit__ = module.commit
+            if repo_url := getattr(module.repo, "clean_url", None):
+                self.__version__ += f"+g[{module.commit[:7]}]({repo_url}/commit/{module.commit})"
             else:
-                self.__version__ += f"+g[{commit[:7]}]"
+                self.__version__ += f"+g[{module.commit[:7]}]"
+        if 732425670856147075 in self.bot.owner_ids:
+            with contextlib.suppress(RuntimeError, ValueError):
+                self.bot.add_dev_env_value(self.qualified_name, lambda ctx: self)
 
     def format_help_for_context(self, ctx: commands.Context) -> str:
         """Thanks Sinbad!"""
@@ -50,3 +49,6 @@ class Cog(commands.Cog):
             f"`Cog Version   :` {self.__version__}\n"
             f"`Documentation :` [Click here to read!]({docs})"
         )
+
+    def cog_unload(self):
+        close_logger(self._log)

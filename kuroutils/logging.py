@@ -3,12 +3,19 @@
 
 import logging
 
+from red_commons.logging import RedTraceLogger, getLogger
 from redbot.core import commands
 from redbot.core.data_manager import cog_data_path
 from redbot.logging import RotatingFileHandler
 
+__all__ = ("get_logger", "init_logger", "close_logger")
 
-def init_logger(logger: logging.Logger, cog: commands.Cog) -> None:
+
+def get_logger(cog: commands.Cog) -> RedTraceLogger:
+    return getLogger(f"red.kuro-cogs.{cog.qualified_name.lower()}")
+
+
+def init_logger(cog: commands.Cog, logger: RedTraceLogger) -> None:
     formatter = logging.Formatter(
         "[{asctime}] {levelname} [{name}] {message}", datefmt="%Y-%m-%d %H:%M:%S", style="{"   
     )
@@ -28,7 +35,7 @@ def init_logger(logger: logging.Logger, cog: commands.Cog) -> None:
         logger.addHandler(file_handler)
 
 
-def close_logger(logger: logging.Logger) -> None:
+def close_logger(logger: RedTraceLogger) -> None:
     for handler in logger.handlers:
         handler.close()
     logger.handlers = []
