@@ -28,6 +28,7 @@ class Cog(commands.Cog):
         return discord.utils.get(await downloader.installed_cogs(), name=name)
 
     async def cog_load(self) -> None:
+        await self.bot.wait_until_red_ready()
         if module := await self.get_cog_as_installed_module():
             self.__commit__ = module.commit
             if repo_url := getattr(module.repo, "clean_url", None):
