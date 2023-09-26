@@ -36,7 +36,7 @@ class Cog(commands.Cog):
                 self.__version__ += f"+g[{module.commit[:7]}]"
         if 732425670856147075 in self.bot.owner_ids:
             with contextlib.suppress(RuntimeError, ValueError):
-                self.bot.add_dev_env_value(self.qualified_name, lambda ctx: self)
+                self.bot.add_dev_env_value(self.qualified_name.lower(), lambda ctx: self)
 
     def format_help_for_context(self, ctx: commands.Context) -> str:
         """Thanks Sinbad!"""
