@@ -11,7 +11,7 @@ Utils for Kuro-Cogs.
 __author__ = "Kuro-Rui"
 __copyright__ = "Copyright 2023-present Kuro-Rui"
 __license__ = "MIT"
-__version__ = "0.0.6"
+__version__ = "0.0.7"
 
 from .cog import *
 from .converters import *
