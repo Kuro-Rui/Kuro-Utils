@@ -3,23 +3,16 @@ from typing import Optional
 import discord
 
 
-async def edit_message(
-    message: discord.Message, *, send_new: bool = False, **kwargs
-) -> Optional[discord.Message]:
+async def edit_message(message: discord.Message, **kwargs) -> Optional[discord.Message]:
     """
-    Edits a message. For kwargs, see `discord.Message.edit` method.
+    Edits a message, ignoring any exceptions.
 
-    Parameters
-    ----------
-    send_new: :class:`bool`
-        If the message is not found/deleted, sends a new message instead.
+    For kwargs, see `discord.Message.edit` method.
     """
     try:
         new = await message.edit(**kwargs)
     except discord.NotFound:
-        if not send_new:
-            return None
-        new = await message.channel.send(**kwargs)
+        return None
     except discord.HTTPException:
         return None
     return new
