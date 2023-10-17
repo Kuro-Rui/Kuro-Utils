@@ -1,5 +1,5 @@
 import contextlib
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 import discord
 from redbot.cogs.downloader.installable import InstalledModule
@@ -8,6 +8,8 @@ from redbot.core.bot import Red
 from redbot.core.utils.chat_formatting import humanize_list
 
 from .logging import close_logger, get_logger, init_logger
+
+RequestType = Literal["discord_deleted_user", "owner", "user", "user_strict"]
 
 
 class Cog(commands.Cog):
@@ -19,6 +21,9 @@ class Cog(commands.Cog):
         self.bot = bot
         self._log = get_logger(self)
         init_logger(self, self._log)
+
+    async def red_delete_data_for_user(self, *, requester: RequestType, user_id: int):
+        return
 
     async def get_cog_as_installed_module(self) -> Optional[InstalledModule]:
         if not (downloader := self.bot.get_cog("Downloader")):
