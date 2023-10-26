@@ -1,4 +1,3 @@
-import subprocess
 from typing import Optional
 
 import discord
@@ -43,6 +42,7 @@ async def edit_message(message: discord.Message, **kwargs) -> Optional[discord.M
 def get_commit_hash(length: int = 7) -> str:
     """Get the commit hash of the current version."""
     try:
+        import subprocess
         process = subprocess.Popen(
             ["git", "rev-parse", "--short", "HEAD"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
