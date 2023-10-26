@@ -1,22 +1,9 @@
+import subprocess
 from typing import Optional
 
 import discord
 
-
-async def edit_message(message: discord.Message, **kwargs) -> Optional[discord.Message]:
-    """
-    Edits a message, ignoring any exceptions.
-
-    For kwargs, see `discord.Message.edit` method.
-    """
-    try:
-        new = await message.edit(**kwargs)
-    except discord.NotFound:
-        return None
-    except discord.HTTPException:
-        return None
-    return new
-
+# Message related utilities
 
 async def delete_message(
     message: Optional[discord.Message], *, delay: Optional[float] = None
@@ -36,3 +23,32 @@ async def delete_message(
     except discord.HTTPException:
         return False
     return True
+
+async def edit_message(message: discord.Message, **kwargs) -> Optional[discord.Message]:
+    """
+    Edits a message, ignoring any exceptions.
+
+    For kwargs, see `discord.Message.edit` method.
+    """
+    try:
+        new = await message.edit(**kwargs)
+    except discord.NotFound:
+        return None
+    except discord.HTTPException:
+        return None
+    return new
+
+# Version related utilities
+
+def get_commit_hash(length: int = 7) -> str:
+    """Get the commit hash of the current version."""
+    try:
+        process = subprocess.Popen(
+            ["git", "rev-parse", "--short", "HEAD"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        out, err = process.communicate()
+        if out:
+            return out.decode("utf-8").strip()[:length]
+        return None
+    except Exception:
+        return None

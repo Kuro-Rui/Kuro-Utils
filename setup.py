@@ -1,19 +1,14 @@
 import re
-import subprocess
 from pathlib import Path
 from setuptools import find_packages, setup
 
+from kuroutils.utils import get_commit_hash
+
 with open(Path(__file__).parent / "kuroutils" / "__init__.py", "r") as fp:
     version = re.search(r"__version__ = \"(\d*\.\d*\.\d*)\"", fp.read()).group(1)
-try:
-    process = subprocess.Popen(
-        ["git", "rev-parse", "--short", "HEAD"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
-    out, err = process.communicate()
-    if out:
-        version += "+g" + out.decode("utf-8").strip()[:7]
-except Exception:
-    pass
+commit_hash = get_commit_hash()
+if commit_hash:
+    version += f"+g{commit_hash}"
 
 with open("README.md", "r") as fp:
     long_description = fp.read()
