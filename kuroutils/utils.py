@@ -1,5 +1,5 @@
+import os
 import subprocess
-from pathlib import Path
 from typing import Optional
 
 import discord
@@ -43,12 +43,15 @@ async def edit_message(message: discord.Message, **kwargs) -> Optional[discord.M
 
 def get_commit_hash(length: int = 7) -> str:
     """Get the commit hash of the current version."""
+    cwd = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+    if not os.path.exists(os.path.join(cwd, ".git")):
+        return None
     try:
         process = subprocess.Popen(
             ["git", "rev-parse", "--short", "HEAD"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            cwd=str(Path(__file__).parent.parent),
+            cwd=cwd,
         )
         out, err = process.communicate()
         if out:
