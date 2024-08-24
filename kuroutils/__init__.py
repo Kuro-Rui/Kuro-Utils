@@ -11,11 +11,10 @@ Utils for Kuro-Cogs.
 __author__ = "Kuro-Rui"
 __copyright__ = "Copyright 2023-present Kuro-Rui"
 __license__ = "MIT"
-__version__ = "0.0.10"
+__version__ = "0.0.11"
 
 from .cog import *
 from .converters import *
 from .logging import *
-from .models import *
 from .utils import *
 from .views import *

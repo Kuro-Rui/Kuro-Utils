@@ -12,6 +12,13 @@ async def delete_message(
     Easier than putting these 3 lines at each message deletion for each cog.
 
     Thanks AAA3A! (https://github.com/AAA3A-AAA3A/AAA3A_utils/blob/main/AAA3A_utils/cogsutils.py#L487-L504)
+
+    Parameters
+    ----------
+    message: Optional[:class:`discord.Message`]
+        The message to delete.
+    delay: Optional[:class:`float`]
+        The delay in seconds before deleting the message.
     """
     if not message:
         return True
@@ -22,17 +29,3 @@ async def delete_message(
     except discord.HTTPException:
         return False
     return True
-
-async def edit_message(message: discord.Message, **kwargs) -> Optional[discord.Message]:
-    """
-    Edits a message, ignoring any exceptions.
-
-    For kwargs, see `discord.Message.edit` method.
-    """
-    try:
-        new = await message.edit(**kwargs)
-    except discord.NotFound:
-        return None
-    except discord.HTTPException:
-        return None
-    return new
